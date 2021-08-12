@@ -26,6 +26,10 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JOptionPane;
 
+/**
+ * GameGUI is the main GUI for showing the actual game
+ * Displays information as the game is played out in the game class
+ * */
 class GameGUI extends JPanel implements ActionListener {
 	private Game game;
 	private JFrame frame;
@@ -44,7 +48,17 @@ class GameGUI extends JPanel implements ActionListener {
 		
 		repaint();
 	}
-
+	
+	/*
+	 * main 'draw' method
+	 * methods:
+	 * drawBoard(gtd, x, y);
+	 * displayCurrentPlayer(gtd);
+	 * addMoveButtons(x, y);
+	 * addButtons(x, y, gtd);
+	 * showMoves(gtd);
+	 * 
+	 */
 	public void paint(Graphics g) {
 		super.paint(g);
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -63,7 +77,9 @@ class GameGUI extends JPanel implements ActionListener {
 		showMoves(gtd);
 	}
 	
-
+	/*
+	 * displays current players name on the screen
+	 */
 	public void displayCurrentPlayer(Graphics2D gtd) {
 		String name = game.getCurrentPlayerName();
 		gtd.setColor(Color.black);
@@ -71,14 +87,17 @@ class GameGUI extends JPanel implements ActionListener {
 		gtd.setFont(font);
 		gtd.drawString(name + " it's your turn", 510, 20);
 	}
-
-	public void displayInformation(Graphics2D gtd, String string) {
-		String name = game.getCurrentPlayerName();
-		gtd.setColor(Color.black);
-		Font font = new Font("Verdana", Font.BOLD, 12);
-		gtd.setFont(font);
-		gtd.drawString(name + " it's your turn", 510, 20);
-	}
+	
+	/*
+	 * 
+//	 */
+//	public void displayInformation(Graphics2D gtd, String string) {
+//		String name = game.getCurrentPlayerName();
+//		gtd.setColor(Color.black);
+//		Font font = new Font("Verdana", Font.BOLD, 12);
+//		gtd.setFont(font);
+//		gtd.drawString(name + " it's your turn", 510, 20);
+//	}
 
 	public void showMoves(Graphics2D gtd) {
 		gtd.setColor(Color.black);
