@@ -31,6 +31,7 @@ class GameGUI extends JPanel implements ActionListener {
 	public boolean inEstate = false;
 	private String character = "";
 	private String weapon = "";
+	private String estate = "";
 	private ArrayList<String> refutations;
 	private int guesserIndex;
 
@@ -293,8 +294,8 @@ class GameGUI extends JPanel implements ActionListener {
 		submit.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-
-				Guess guess = new Guess(game.currentPlayer.location.name, weapon, character);
+				estate = game.currentPlayer.location.name;
+				Guess guess = new Guess(estate, weapon, character);
 
 				if (game.murderCircumstance.equals(guess)) {
 					JOptionPane.showMessageDialog(null,
@@ -345,6 +346,7 @@ class GameGUI extends JPanel implements ActionListener {
 		if (guesserIndex == curIndex) {
 			character = "";
 			weapon = "";
+			estate = "";
 			removeOptions(radios, submit);
 			JOptionPane.showMessageDialog(null, "Please pass the screen to " + game.currentPlayer.playerName);
 			displayRefutationsToGuess();
@@ -357,7 +359,7 @@ class GameGUI extends JPanel implements ActionListener {
 				+ game.players.get(guesserIndex).location.name + " with the " + weapon + "\n" + "Do you agree? If you have cards that refute the guess, play one!");
 			ArrayList<String> refutationCards = new ArrayList<>();
 			refutationCards = game.refutation();
-			if (!refutationCards.contains(character) && !refutationCards.contains(weapon)) {
+			if (!refutationCards.contains(character) && !refutationCards.contains(weapon) && !refutationCards.contains(estate)) {
 				game.nextPlayer(curIndex);
 				startRefutation(radios, submit);
 			} else {
@@ -368,7 +370,7 @@ class GameGUI extends JPanel implements ActionListener {
 	private void addRefutationOptions(ArrayList<String> options, int currentIndex, List<JRadioButton> radios) {
     	int top = this.getSize().height/7;
     	for (int i = 0; i < options.size(); i++) {
-    		if (options.get(i).equals(character) || options.get(i).equals(weapon)) {
+    		if (options.get(i).equals(character) || options.get(i).equals(weapon) || options.get(i).equals(estate)) {
     			JButton submit = new JButton(options.get(i));
     			submit.addMouseListener(new MouseListener() {
     				@Override
