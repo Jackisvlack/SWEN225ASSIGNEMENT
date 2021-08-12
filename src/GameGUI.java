@@ -1,5 +1,6 @@
 
 import java.awt.Color;
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -31,6 +32,11 @@ import javax.swing.JOptionPane;
  * Displays information as the game is played out in the game class
  * */
 class GameGUI extends JPanel implements ActionListener {
+	private JMenuBar menuBar;
+	private JMenu newGame;
+	private JMenu seeCards;
+	private JMenuItem startNewGame;
+	private JMenuItem showPlayerCards;
 	private Game game;
 	private JFrame frame;
 	private int squarelWidth, squareHeight = 25;
@@ -61,6 +67,7 @@ class GameGUI extends JPanel implements ActionListener {
 	 */
 	public void paint(Graphics g) {
 		super.paint(g);
+		this.setLayout(null);
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		int x = this.getSize().width;
 		int y = this.getSize().height;
@@ -69,12 +76,12 @@ class GameGUI extends JPanel implements ActionListener {
 		if (this.getComponentCount() > 1) {
 			this.removeAll();
 		}
-
 		drawBoard(gtd, x, y);
 		displayCurrentPlayer(gtd);
 		addMoveButtons(x, y);
 		addButtons(x, y, gtd);
 		showMoves(gtd);
+		menuBar(gtd);
 	}
 	
 	/*
@@ -134,7 +141,6 @@ class GameGUI extends JPanel implements ActionListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (game.currentPlayer.location instanceof Estate && !game.currentPlayer.hasGuessed()) {
-					System.out.println(game.murderCircumstance.toString());
 					guesserIndex = game.getPlayerList().indexOf(game.currentPlayer);
 					makeGuess(game.currentPlayer.location, gtd);
 				} else {
@@ -334,7 +340,7 @@ class GameGUI extends JPanel implements ActionListener {
 					      } else if (res == JOptionPane.NO_OPTION) {
 					    	  System.exit(0);
 					      } else if (res == JOptionPane.CLOSED_OPTION) {
-					         System.out.println("Exit the game, or select new game from Menu");
+					    	  JOptionPane.showMessageDialog(null, "Exit or select new game from Menu");
 					      }
 				} else {
 					game.nextPlayer(game.getPlayerList().indexOf(game.currentPlayer));
@@ -418,7 +424,7 @@ class GameGUI extends JPanel implements ActionListener {
 					public void mouseExited(MouseEvent e) {}
     			});
     			
-    			submit.setBounds(this.getSize().width / 2 + this.getSize().width / 4, top , + 210, 100);
+    			submit.setBounds(this.getSize().width / 2 + 160 , top , + 150, 80);
     			submit.setVisible(true);
     			this.add(submit);
     			submit.grabFocus();
@@ -638,6 +644,39 @@ class GameGUI extends JPanel implements ActionListener {
 			left = 10;
 		}
 	}
+	
+	public void menuBar(Graphics2D gtd) {
+        menuBar = new JMenuBar();
+        newGame = new JMenu("Options");
+        startNewGame = new JMenuItem("Start new game");
+        startNewGame.addActionListener(new ActionListener() {
+
+            @Override 
+            public void actionPerformed(ActionEvent e) {    if (e.getSource() == startNewGame) {
+                StartGUI newgame = new StartGUI();
+                String[] arguments = new String[] {"run"};
+                newgame.main(arguments);;
+            }}});
+        
+        showPlayerCards = new JMenuItem("Show Player Cards");
+        showPlayerCards.addActionListener(new ActionListener() {
+
+            @Override 
+            public void actionPerformed(ActionEvent e) {    if (e.getSource() == showPlayerCards) {
+            	game.currentPlayer.getCharName();
+          
+            	String cards = "";
+            	for (Card card : game.currentPlayer.getPlayerCards()) cards += card.getName() + ", ";
+            	JOptionPane.showMessageDialog(null, "Player " + game.currentPlayer.getPlayerName() + " is Holding the following cards : " + cards);
+            }}});
+
+        newGame.add(startNewGame);
+        newGame.add(showPlayerCards);
+        menuBar.add(newGame);
+        frame.add(menuBar);
+        frame.setJMenuBar(menuBar);
+    }
+	
 	
 	public void setGuesserIndex(int index) {
 		this.guesserIndex = index;
