@@ -127,7 +127,6 @@ class GameGUI extends JPanel implements ActionListener {
 
 	public void makeGuess(Location loc, Graphics2D gtd) {
 		List<String> cOptions = game.getCardOptions();
-		System.out.println(game.murderCircumstance);
 		addOptionButtons(cOptions, gtd);
 		JOptionPane.showMessageDialog(null,
 				"Choose one Weapon and one Character, then click submit to submit your guess!");
@@ -303,6 +302,7 @@ class GameGUI extends JPanel implements ActionListener {
 					removeOptions(radios, submit);
 				} else {
 					guesserIndex = game.getPlayerList().indexOf(game.currentPlayer);
+					System.out.println(game.getPlayerList().get(guesserIndex).getPlayerName()+ " -> " + game.currentPlayer.playerName);
 					game.nextPlayer(game.getPlayerList().indexOf(game.currentPlayer));
 					startRefutation(radios, submit);
 				}

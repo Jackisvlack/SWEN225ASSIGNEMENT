@@ -214,6 +214,7 @@ public class Game {
 	    			
 	    			if ((currentPlayer.location instanceof Estate)) {
 	    				gg.inEstate = true;
+	    				return 0;
 	    			}
 	    		} 
 			}
@@ -252,6 +253,7 @@ public class Game {
 	    			
 	    			if ((currentPlayer.location instanceof Estate)) {
 	    				gg.inEstate = true;
+	    				return 0;
 	    			}
 	    		} 
 			}
@@ -290,6 +292,7 @@ public class Game {
 	    			}
 	    			if ((currentPlayer.location instanceof Estate)) {
 	    				gg.inEstate = true;
+	    				return 0;
 	    			}
 	    		} 
 			}
@@ -329,6 +332,7 @@ public class Game {
 	    			}
 	    			if ((currentPlayer.location instanceof Estate)) {
 	    				gg.inEstate = true;
+	    				return 0;
 	    			}
 	    		} 
 			}
