@@ -19,11 +19,18 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JOptionPane;
 
 class GameGUI extends JPanel implements ActionListener {
+	private JMenuBar menuBar;
+	private JMenu newGame;
+	private JMenuItem startNewGame;
+private JMenuItem showPlayerCards;
 	private Game game;
 	private JFrame frame;
 	private int squarelWidth, squareHeight = 25;
@@ -51,12 +58,14 @@ class GameGUI extends JPanel implements ActionListener {
 		if (this.getComponentCount() > 1) {
 			this.removeAll();
 		}
-
+		this.setLayout(null);
+        menuBar(gtd);
 		drawBoard(gtd, x, y);
 		displayCurrentPlayer(gtd);
 		addMoveButtons(x, y);
 		addButtons(x, y, gtd);
 		showMoves(gtd);
+		
 
 	}
 
@@ -84,6 +93,7 @@ class GameGUI extends JPanel implements ActionListener {
 	}
 
 	public void addButtons(int x, int y, Graphics2D gtd) {
+		    
 		JButton roll = new JButton("ROLL");
 		roll.addActionListener(new ActionListener() {
 
@@ -615,6 +625,37 @@ class GameGUI extends JPanel implements ActionListener {
 			left = 10;
 		}
 	}
+	public void menuBar(Graphics2D gtd) {
+        menuBar = new JMenuBar();
+        newGame = new JMenu("Options");
+        startNewGame = new JMenuItem("Start new game");
+        startNewGame.addActionListener(new ActionListener() {
+
+            @Override 
+            public void actionPerformed(ActionEvent e) {    if (e.getSource() == startNewGame) {
+                StartGUI newgame = new StartGUI();
+                String[] arguments = new String[] {"run"};
+                newgame.main(arguments);;
+            }}});
+        
+        showPlayerCards = new JMenuItem("Show Player Cards");
+        showPlayerCards.addActionListener(new ActionListener() {
+
+            @Override 
+            public void actionPerformed(ActionEvent e) {    if (e.getSource() == showPlayerCards) {
+            	game.currentPlayer.getCharName();
+          
+            	String cards = "";
+            	for (Card card : game.currentPlayer.getPlayerCards()) cards += card.getName() + ", ";
+            	JOptionPane.showMessageDialog(null, "Player " + game.currentPlayer.getCharName() + " is Holding the following cards : " + cards);
+            }}});
+
+        newGame.add(startNewGame);
+        newGame.add(showPlayerCards);
+        menuBar.add(newGame);
+        this.add(menuBar);
+        frame.setJMenuBar(menuBar);
+    }
 	
 	public void setGuesserIndex(int index) {
 		this.guesserIndex = index;
