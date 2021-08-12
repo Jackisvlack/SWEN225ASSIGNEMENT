@@ -110,6 +110,7 @@ class GameGUI extends JPanel implements ActionListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (game.currentPlayer.location instanceof Estate && !game.currentPlayer.hasGuessed()) {
+					System.out.println(game.murderCircumstance.toString());
 					guesserIndex = game.getPlayerList().indexOf(game.currentPlayer);
 					makeGuess(game.currentPlayer.location, gtd);
 				} else {
@@ -299,6 +300,19 @@ class GameGUI extends JPanel implements ActionListener {
 					JOptionPane.showMessageDialog(null,
 							"Congratulations, " + game.currentPlayer.playerName + " - YOU HAVE WON THE GAME!");
 					removeOptions(radios, submit);
+					int res = JOptionPane.showOptionDialog(new JFrame(), "Would you like to play again","Game won",
+					         JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null,
+					         new Object[] { "Yes", "No" }, JOptionPane.YES_OPTION);
+					      if (res == JOptionPane.YES_OPTION) {
+					         StartGUI newgame = new StartGUI();
+					         String[] arguments = new String[] {"run"};
+					         newgame.main(arguments);
+					         
+					      } else if (res == JOptionPane.NO_OPTION) {
+					    	  System.exit(0);
+					      } else if (res == JOptionPane.CLOSED_OPTION) {
+					         System.out.println("Exit the game, or select new game from Menu");
+					      }
 				} else {
 					game.nextPlayer(game.getPlayerList().indexOf(game.currentPlayer));
 					refutations = new ArrayList<>();
