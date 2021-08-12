@@ -110,9 +110,8 @@ class GameGUI extends JPanel implements ActionListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (game.currentPlayer.location instanceof Estate && !game.currentPlayer.hasGuessed()) {
+					guesserIndex = game.getPlayerList().indexOf(game.currentPlayer);
 					makeGuess(game.currentPlayer.location, gtd);
-					int curIndex = game.getPlayerList().indexOf(game.currentPlayer);
-					game.nextPlayer(curIndex);
 				} else {
 					JOptionPane.showMessageDialog(null, "You not currently in an estate, or you have guessed already!");
 				}
@@ -301,10 +300,10 @@ class GameGUI extends JPanel implements ActionListener {
 							"Congratulations, " + game.currentPlayer.playerName + " - YOU HAVE WON THE GAME!");
 					removeOptions(radios, submit);
 				} else {
-					guesserIndex = game.getPlayerList().indexOf(game.currentPlayer);
-					System.out.println(game.getPlayerList().get(guesserIndex).getPlayerName()+ " -> " + game.currentPlayer.playerName);
 					game.nextPlayer(game.getPlayerList().indexOf(game.currentPlayer));
+					refutations = new ArrayList<>();
 					startRefutation(radios, submit);
+					return;
 				}
 			}
 
@@ -335,12 +334,13 @@ class GameGUI extends JPanel implements ActionListener {
 			removeOptions(radios, submit);
 			JOptionPane.showMessageDialog(null, "Please pass the screen to " + game.currentPlayer.playerName);
 			displayRefutationsToGuess();
+			game.nextPlayer(curIndex);
+			return;
 		}
-		refutations = new ArrayList<>();
 		removeOptions(radios, submit);
+		JOptionPane.showMessageDialog(null, "Please pass the screen to " + game.currentPlayer.playerName);
 		JOptionPane.showMessageDialog(null, game.getPlayerList().get(guesserIndex).getPlayerName() + " guessed " + character + " in "
-				+ game.currentPlayer.location.name + " with the " + weapon + "\n" + "Do you agree?");
-			JOptionPane.showMessageDialog(null, "Please pass the screen to " + game.currentPlayer.playerName);
+				+ game.players.get(guesserIndex).location.name + " with the " + weapon + "\n" + "Do you agree? If you have cards that refute the guess, play one!");
 			ArrayList<String> refutationCards = new ArrayList<>();
 			refutationCards = game.refutation();
 			if (!refutationCards.contains(character) && !refutationCards.contains(weapon)) {
@@ -405,6 +405,7 @@ class GameGUI extends JPanel implements ActionListener {
 		}
 		JOptionPane.showMessageDialog(null, refutationsToGuess);
 		game.nextPlayer(guesserIndex);
+		JOptionPane.showMessageDialog(null, game.currentPlayer.playerName + " it's your turn press roll!");
 	}
 
 	public void addMoveButtons(int x, int y) {
@@ -598,6 +599,10 @@ class GameGUI extends JPanel implements ActionListener {
 			top += 20;
 			left = 10;
 		}
+	}
+	
+	public void setGuesserIndex(int index) {
+		this.guesserIndex = index;
 	}
 
 	public void getStatus() {
