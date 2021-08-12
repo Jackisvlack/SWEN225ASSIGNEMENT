@@ -5,6 +5,11 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.awt.Font;
 import java.awt.GradientPaint;
@@ -14,6 +19,7 @@ import java.awt.Graphics2D;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JOptionPane;
@@ -24,6 +30,8 @@ class GameGUI extends JPanel implements ActionListener {
     private int squarelWidth, squareHeight = 25;
     private int moves;
     public boolean inEstate = false;
+	private String character = "";
+	private String weapon = "";
 
 
     public GameGUI (Game game, JFrame frame){
@@ -38,6 +46,10 @@ class GameGUI extends JPanel implements ActionListener {
 		int x = this.getSize().width;
 		int y = this.getSize().height;
 		Graphics2D gtd = (Graphics2D) g;
+		
+		if (this.getComponentCount() > 1) {
+			this.removeAll();
+		}
 		
         drawBoard(gtd, x, y);
         displayCurrentPlayer(gtd);
@@ -115,69 +127,101 @@ class GameGUI extends JPanel implements ActionListener {
     
     public void makeGuess(Location loc, Graphics2D gtd) {
     	List<String> cOptions = game.getCardOptions();
-    	
-    	addOptionButtons(cOptions);
+    	System.out.println(game.murderCircumstance);
+    	addOptionButtons(cOptions, gtd);
+    	JOptionPane.showMessageDialog(null, "Choose one Weapon and one Character, then click submit to submit your guess!" );
     }
 
-    private void addOptionButtons(List<String> cOptions) {
+    private void addOptionButtons(List<String> cOptions, Graphics2D gtd) {
     	
-    	ButtonGroup bg = new ButtonGroup();
+    	ButtonGroup ch = new ButtonGroup();
+    	ButtonGroup wep = new ButtonGroup();
         int top = this.getSize().width/2+this.getSize().width/4;
+        List<String> chB = new ArrayList<String>(Arrays.asList("lucilla", "malina", "bert", "percy"));
+        List<String> wepB = new ArrayList<String>(Arrays.asList("knife", "broom", "ipad", "scissors", "shovel"));
+        List<JRadioButton> radios = new ArrayList<>();
         
-            JRadioButton wop1 = new JRadioButton(cOptions.get(0));
-            wop1.setBounds(this.getSize().width/2+this.getSize().width/4,this.getSize().height/3, 100, 20);
-            JRadioButton wop2 = new JRadioButton(cOptions.get(1));
-            wop1.setBounds(this.getSize().width/2+this.getSize().width/4 + 22,this.getSize().height/3, 100, 20);
-            JRadioButton wop3 = new JRadioButton(cOptions.get(2));
-            wop1.setBounds(this.getSize().width/2+this.getSize().width/4 + 44, this.getSize().height/3, 100, 20);
-            JRadioButton wop4 = new JRadioButton(cOptions.get(3));
-            wop1.setBounds(this.getSize().width/2+this.getSize().width/4 + 66, this.getSize().height/3, 100, 20);
-            JRadioButton wop5 = new JRadioButton(cOptions.get(4));
-            wop1.setBounds(this.getSize().width/2+this.getSize().width/4 + 88, this.getSize().height/3, 100, 20);
-            JRadioButton wop6 = new JRadioButton(cOptions.get(5));
-            wop1.setBounds(this.getSize().width/2+this.getSize().width/4 + 110, this.getSize().height/3, 100, 20);
-            JRadioButton wop7 = new JRadioButton(cOptions.get(6));
-            wop1.setBounds(this.getSize().width/2+this.getSize().width/4 + 132, this.getSize().height/3, 100, 20);
-            JRadioButton wop8 = new JRadioButton(cOptions.get(7));
-            wop1.setBounds(this.getSize().width/2+this.getSize().width/4 + 154, this.getSize().height/3, 100, 20);
-            JRadioButton wop9 = new JRadioButton(cOptions.get(8));
-            wop1.setBounds(this.getSize().width/2+this.getSize().width/4 + 176, this.getSize().height/3, 100, 20);
-            wop1.setVisible(true);
-            bg.add(wop1);
-            this.add(wop1);
-            wop1.grabFocus();
-            wop2.setVisible(true);
-            bg.add(wop2);
-            this.add(wop2);
-            wop2.grabFocus();
-            wop3.setVisible(true);
-            bg.add(wop3);
-            this.add(wop3);
-            wop3.grabFocus();
-            wop4.setVisible(true);
-            bg.add(wop4);
-            this.add(wop4);
-            wop4.grabFocus();
-            wop5.setVisible(true);
-            bg.add(wop5);
-            this.add(wop5);
-            wop5.grabFocus();
-            wop6.setVisible(true);
-            bg.add(wop6);
-            this.add(wop6);
-            wop6.grabFocus();
-            wop7.setVisible(true);
-            bg.add(wop7);
-            this.add(wop7);
-            wop7.grabFocus();
-            wop8.setVisible(true);
-            bg.add(wop8);
-            this.add(wop8);
-            wop8.grabFocus();
-            wop9.setVisible(true);
-            bg.add(wop9);
-            this.add(wop9);
-            wop9.grabFocus();
+        JRadioButton wop1 = new JRadioButton(cOptions.get(0));
+        wop1.setBounds(this.getSize().width/2+this.getSize().width/4, this.getSize().height/7, 100, 20);
+        JRadioButton wop2 = new JRadioButton(cOptions.get(1));
+        wop2.setBounds(this.getSize().width/2+this.getSize().width/4,this.getSize().height/7 + 20, 100, 20);
+        JRadioButton wop3 = new JRadioButton(cOptions.get(2));
+        wop3.setBounds(this.getSize().width/2+this.getSize().width/4, this.getSize().height/7 + 40, 100, 20);
+        JRadioButton wop4 = new JRadioButton(cOptions.get(3));
+        wop4.setBounds(this.getSize().width/2+this.getSize().width/4, this.getSize().height/7 + 60, 100, 20);
+        JRadioButton wop5 = new JRadioButton(cOptions.get(4));
+        wop5.setBounds(this.getSize().width/2+this.getSize().width/4, this.getSize().height/7 + 100, 100, 20);
+        JRadioButton wop6 = new JRadioButton(cOptions.get(5));
+        wop6.setBounds(this.getSize().width/2+this.getSize().width/4, this.getSize().height/7 + 120, 100, 20);
+        JRadioButton wop7 = new JRadioButton(cOptions.get(6));
+        wop7.setBounds(this.getSize().width/2+this.getSize().width/4, this.getSize().height/7 + 140, 100, 20);
+        JRadioButton wop8 = new JRadioButton(cOptions.get(7));
+        wop8.setBounds(this.getSize().width/2+this.getSize().width/4, this.getSize().height/7 + 160, 100, 20);
+        JRadioButton wop9 = new JRadioButton(cOptions.get(8));
+        wop9.setBounds(this.getSize().width/2+this.getSize().width/4, this.getSize().height/7 + 180, 100, 20);
+        
+        wop1.setVisible(true); ch.add(wop1); this.add(wop1); wop1.grabFocus(); radios.add(wop1);
+        wop2.setVisible(true); ch.add(wop2); this.add(wop2); wop2.grabFocus(); radios.add(wop2);
+        wop3.setVisible(true); ch.add(wop3); this.add(wop3); wop3.grabFocus(); radios.add(wop3);
+        wop4.setVisible(true); ch.add(wop4); this.add(wop4); wop4.grabFocus(); radios.add(wop4);
+        wop5.setVisible(true); wep.add(wop5); this.add(wop5); wop5.grabFocus(); radios.add(wop5);
+        wop6.setVisible(true); wep.add(wop6); this.add(wop6); wop6.grabFocus(); radios.add(wop6);
+        wop7.setVisible(true); wep.add(wop7); this.add(wop7); wop7.grabFocus(); radios.add(wop7);
+        wop8.setVisible(true); wep.add(wop8); this.add(wop8); wop8.grabFocus(); radios.add(wop8);
+        wop9.setVisible(true); wep.add(wop9); this.add(wop9); wop9.grabFocus(); radios.add(wop9);
+        
+        wop1.addActionListener(new ActionListener() { public void actionPerformed(ActionEvent e) { if(chB.contains(wop1.getText())){character = wop1.getText();} else {weapon = wop1.getText();} } });
+        wop2.addActionListener(new ActionListener() { public void actionPerformed(ActionEvent e) { if(chB.contains(wop2.getText())){character = wop2.getText();} else {weapon = wop2.getText();} } });
+        wop3.addActionListener(new ActionListener() { public void actionPerformed(ActionEvent e) { if(chB.contains(wop3.getText())){character = wop3.getText();} else {weapon = wop3.getText();} } });
+        wop4.addActionListener(new ActionListener() { public void actionPerformed(ActionEvent e) { if(chB.contains(wop4.getText())){character = wop4.getText();} else {weapon = wop4.getText();} } });
+                                                                                                  
+        wop5.addActionListener(new ActionListener() { public void actionPerformed(ActionEvent e) { if(chB.contains(wop5.getText())){character = wop5.getText();} else {weapon = wop5.getText();} } });
+        wop6.addActionListener(new ActionListener() { public void actionPerformed(ActionEvent e) { if(chB.contains(wop6.getText())){character = wop6.getText();} else {weapon = wop6.getText();} } });
+        wop7.addActionListener(new ActionListener() { public void actionPerformed(ActionEvent e) { if(chB.contains(wop7.getText())){character = wop7.getText();} else {weapon = wop7.getText();} } });
+        wop8.addActionListener(new ActionListener() { public void actionPerformed(ActionEvent e) { if(chB.contains(wop8.getText())){character = wop8.getText();} else {weapon = wop8.getText();} } });
+        wop9.addActionListener(new ActionListener() { public void actionPerformed(ActionEvent e) { if(chB.contains(wop9.getText())){character = wop9.getText();} else {weapon = wop9.getText();} } });
+        
+        
+        JButton submit = new JButton("SUBMIT GUESS");
+		submit.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				System.out.println(weapon + " " + character + " " + game.currentPlayer.location.name);
+				
+				Guess guess = new Guess(game.currentPlayer.location.name, weapon, character);
+				
+				if (game.murderCircumstance.equals(guess)) {
+					JOptionPane.showMessageDialog(null, "Congratulations, " + game.currentPlayer.charName + " - YOU HAVE WON THE GAME!" );
+					removeOptions(radios, submit);
+				} else {
+					startRefutation(radios, submit);
+				}
+			}
+
+			public void mousePressed(MouseEvent e) {}
+			public void mouseReleased(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {}
+			public void mouseExited(MouseEvent e) {} 
+        });
+
+		submit.setBounds(this.getSize().width/2+this.getSize().width/4, this.getSize().height/7 + 210, 100, 40);
+		submit.setVisible(true);
+		this.add(submit);
+		submit.grabFocus();
+	}
+    
+    private void startRefutation(List<JRadioButton> radios, JButton submit) {
+		removeOptions(radios, submit);
+		int curIndex = game.getPlayerList().indexOf(game.currentPlayer);
+		JOptionPane.showMessageDialog(null, game.currentPlayer.charName + " guessed " + character + " in " +  game.currentPlayer.location.name + " with the " + weapon + "\n"
+				+ "Do you agree?");
+		game.nextPlayer(curIndex);
+		JOptionPane.showMessageDialog(null, "Please pass the screen to " + game.currentPlayer.charName);
+	}
+    
+    public void removeOptions(List<JRadioButton> buttons, JButton submit) {
+		for (int i = 0; i < buttons.size(); i++) { buttons.get(i).setVisible(false); }
+		submit.setVisible(false);
 	}
 
 	public void addMoveButtons(int x, int y) {
