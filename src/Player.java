@@ -35,6 +35,10 @@ public class Player {
     public void setPlayerName(String name){
         this.playerName = name;
     }
+    
+    public HashSet<Card> getPlayerCards(){
+    	return this.cards;
+    }
 
 
     /**

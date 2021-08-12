@@ -453,6 +453,14 @@ public class Game {
 //		currentPlayer.setGuessed(true);
     }
     
+    public ArrayList<String> refutation() {
+    	ArrayList<String> playerCards = new ArrayList<>();
+    	for (Card card : currentPlayer.getPlayerCards()) {
+    		playerCards.add(card.getName());
+    	}
+    	return playerCards;
+    }
+    
     /**
      * prints out eligible refutation cards, is a method so that it can be called multiple times until it has 
      * good guessing input
@@ -495,5 +503,9 @@ public class Game {
 
 	public Character getCurrentPlayerIcon(){
 		return currentPlayer.getCharacterIcon();
+	}
+	
+	public int getNumberOfPlayers() {
+		return this.numberOfPlayers;
 	}
 }
