@@ -19,6 +19,9 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JOptionPane;
@@ -38,6 +41,7 @@ class GameGUI extends JPanel implements ActionListener {
 	public GameGUI(Game game, JFrame frame) {
 		this.game = game;
 		this.frame = frame;
+		
 		repaint();
 	}
 
@@ -57,8 +61,8 @@ class GameGUI extends JPanel implements ActionListener {
 		addMoveButtons(x, y);
 		addButtons(x, y, gtd);
 		showMoves(gtd);
-
 	}
+	
 
 	public void displayCurrentPlayer(Graphics2D gtd) {
 		String name = game.getCurrentPlayerName();
