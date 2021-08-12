@@ -308,7 +308,6 @@ class GameGUI extends JPanel implements ActionListener {
 					         StartGUI newgame = new StartGUI();
 					         String[] arguments = new String[] {"run"};
 					         newgame.main(arguments);
-					         
 					      } else if (res == JOptionPane.NO_OPTION) {
 					    	  System.exit(0);
 					      } else if (res == JOptionPane.CLOSED_OPTION) {
