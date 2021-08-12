@@ -115,9 +115,9 @@ public class Game {
 	 */
 	public void dealCards(){
 		int c = 0;
-		for (int i = 0; i < cards.size()-1; i++) {
-			if (c == controlledPlayers.size()-1) { c = 0; }
-			controlledPlayers.get(c).cards.add(cards.get(i));
+		while (!cards.isEmpty()) {
+			if (c == controlledPlayers.size()) { c = 0; }
+			controlledPlayers.get(c).cards.add(cards.remove(0));
 			c++;
 		}
 	}
