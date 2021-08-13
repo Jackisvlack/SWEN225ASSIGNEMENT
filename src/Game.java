@@ -152,13 +152,13 @@ public class Game {
      * gives move order to checkLine, if valid passes on to move method
      * */
     public void nextPlayer(int curIndex){
-				if (curIndex == numberOfPlayers - 1){
-					curIndex = 0;
-					currentPlayer = controlledPlayers.get(curIndex);
-				} else {
-					curIndex++;
-					currentPlayer = controlledPlayers.get(curIndex);
-				}
+		if (curIndex == numberOfPlayers - 1){
+			curIndex = 0;
+			currentPlayer = controlledPlayers.get(curIndex);
+		} else {
+			curIndex++;
+			currentPlayer = controlledPlayers.get(curIndex);
+		}
     }
     
     
@@ -343,119 +343,6 @@ public class Game {
     public ArrayList<Player> getPlayerList() {
     	return players;
     }
-
-    /**
-     * The main guess cycle method
-     * Manages the round of guessing that takes place when a player
-     * that has not guessed enters an estate
-     */
-    public void makeGuess(Location loc, Graphics2D gtd){
-//    	String estate = loc.name;
-//    	List<Integer> idxList = new ArrayList<>();
-//    	int curIndex = players.indexOf(currentPlayer);
-//    	
-    	
-    	/*
-    		Returns list of card options
-    	 */
-//      	getCardOptions();
-    	
-      	// Make an official guess object
-//    	Guess playersGuess = new Guess(estate, weapon, player);
-    	
-    	// check if this is the murder circumstances,
-    	// if yes, the player wins,
-    	// if not, the player continues on to guess cycle.
-//    	if (playersGuess.equals(murderCircumstance)) {
-//    		this.solved = true;
-//			System.out.println("Congratulations!! You have solved the murder!");
-//    		return;
-//    	} 
-//		System.out.println(currentPlayer.charName + " " + playersGuess.toString() + "!");
-//		System.out.println("Who disagrees?");
-//    	
-//		if (curIndex == 0) {
-//			idxList.add(1);
-//			idxList.add(2);
-//			idxList.add(3);
-//		} else if (curIndex == 1) {
-//			idxList.add(2);
-//			idxList.add(3);
-//			idxList.add(0);
-//		} else if (curIndex == 2) {
-//			idxList.add(3);
-//			idxList.add(0);
-//			idxList.add(1);
-//		} else {
-//			idxList.add(0);
-//			idxList.add(1);
-//			idxList.add(2);
-//		}
-//		
-//		List<String> finalCards = new ArrayList<>();
-//		
-//		/**
-//		 * For each of the players that aren't currentPlayer, 
-//		 * get the eligible cards
-//		 * if they have eligible cards, make them choose which card they wish to present
-//		 * if they are not an 'active' player do the same but always choose the first eligible card, if any
-//		 * */
-//		for (int i = 0; i < idxList.size(); i++) { 
-//			List<Card> options = new ArrayList<Card>();
-//			Player p = players.get(idxList.get(i));
-//			
-//			// Get all eligible refutation cards
-//		
-//			for (Card c : p.cards) {
-//				if (c.getName().equals(estate)) {
-//					options.add(c);
-//				} else if (c.getName().equals(weapon)) {
-//					options.add(c);
-//				} else if (c.getName().equals(player)) {
-//					options.add(c);
-//				}
-//			}
-//			
-//			
-//			System.out.println("Please pass the screen on to: " + p.charName);
-//			wait(2);
-//			System.out.println("Hello, " + p.charName);
-//			if (options.isEmpty()) {
-//				System.out.println("Sorry, " + p.getCharName() + ". You have no eligible refutation cards.");
-//			} else {
-//				printEligibleCards(options);
-//				int counter = 0;
-//				
-//				for (Card c : options) {
-//					counter = 0;
-//					//if (c.getName().equals(cardPicked)) {
-//						//finalCards.add(cardPicked);
-//						counter++;
-//						break;
-//					//}
-//				}
-//				
-//				if (counter == 0) {
-//					System.out.println("Please try again as we did not recognize that card!");
-//					printEligibleCards(options);
-//				}
-//				
-//			}
-//				
-//			
-//			
-//		}
-//		
-//		System.out.println("Please pass the screen on to " + currentPlayer.charName);
-//		System.out.println("Hello, " + currentPlayer.charName + " here are what your hopefully loyal associates had to say...");
-//		for (String s : finalCards) {
-//			System.out.println(s);
-//		}
-//		
-//		System.out.println("Your turn is now over! You have not guessed the right murder circumstances, therefore\n"
-//				+ "you are now excluded from guessing in the future!");
-//		currentPlayer.setGuessed(true);
-    }
     
     public ArrayList<String> refutation() {
     	ArrayList<String> playerCards = new ArrayList<>();
@@ -463,17 +350,6 @@ public class Game {
     		playerCards.add(card.getName());
     	}
     	return playerCards;
-    }
-    
-    /**
-     * prints out eligible refutation cards, is a method so that it can be called multiple times until it has 
-     * good guessing input
-     * */
-    public void printEligibleCards(List<Card> options) {
-    	System.out.println("Please choose one of the card(s):");
-		for (Card c : options) {
-			System.out.println(c.getName());
-		}
     }
     
     /**

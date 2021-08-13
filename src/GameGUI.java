@@ -32,7 +32,7 @@ import javax.swing.JOptionPane;
  * @author Jack, Zeb, Nathaniel
  */
 class GameGUI extends JPanel implements ActionListener {
-	private Game game;
+	public Game game;
 	private JFrame frame;
 	private int squarelWidth, squareHeight = 25;
 	private int moves;

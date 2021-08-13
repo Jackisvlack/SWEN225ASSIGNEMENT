@@ -32,8 +32,10 @@ class GameTests {
 		ps.np = 4;
 		ps.pNames = new ArrayList<>(Arrays.asList("player name", "Tory", "Kev", "Selon"));
 		GameGUI ggui = ps.startGame();
-		
-		System.out.println(ggui.getComponents().length);
+		ggui.game.roll();
+		Location loc = ggui.game.currentPlayer.location;
+		ggui.game.moveEast(ggui);
+		assert(!loc.equals(ggui.game.currentPlayer.location));
 	}
 
 }
