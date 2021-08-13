@@ -1,6 +1,5 @@
 
 import java.awt.Color;
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -30,13 +29,9 @@ import javax.swing.JOptionPane;
 /**
  * GameGUI is the main GUI for showing the actual game
  * Displays information as the game is played out in the game class
- * */
+ * @author Jack, Zeb, Nathaniel
+ */
 class GameGUI extends JPanel implements ActionListener {
-	private JMenuBar menuBar;
-	private JMenu newGame;
-	private JMenu seeCards;
-	private JMenuItem startNewGame;
-	private JMenuItem showPlayerCards;
 	private Game game;
 	private JFrame frame;
 	private int squarelWidth, squareHeight = 25;
@@ -55,7 +50,7 @@ class GameGUI extends JPanel implements ActionListener {
 		repaint();
 	}
 	
-	/*
+	/**
 	 * main 'draw' method
 	 * methods:
 	 * drawBoard(gtd, x, y);
@@ -63,11 +58,10 @@ class GameGUI extends JPanel implements ActionListener {
 	 * addMoveButtons(x, y);
 	 * addButtons(x, y, gtd);
 	 * showMoves(gtd);
-	 * 
+	 * @param gtd
 	 */
 	public void paint(Graphics g) {
 		super.paint(g);
-		this.setLayout(null);
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		int x = this.getSize().width;
 		int y = this.getSize().height;
@@ -76,16 +70,17 @@ class GameGUI extends JPanel implements ActionListener {
 		if (this.getComponentCount() > 1) {
 			this.removeAll();
 		}
+
 		drawBoard(gtd, x, y);
 		displayCurrentPlayer(gtd);
 		addMoveButtons(x, y);
 		addButtons(x, y, gtd);
 		showMoves(gtd);
-		menuBar(gtd);
 	}
 	
-	/*
+	/**
 	 * displays current players name on the screen
+	 * @param gtd
 	 */
 	public void displayCurrentPlayer(Graphics2D gtd) {
 		String name = game.getCurrentPlayerName();
@@ -95,24 +90,25 @@ class GameGUI extends JPanel implements ActionListener {
 		gtd.drawString(name + " it's your turn", 510, 20);
 	}
 	
-	/*
-	 * 
-//	 */
-//	public void displayInformation(Graphics2D gtd, String string) {
-//		String name = game.getCurrentPlayerName();
-//		gtd.setColor(Color.black);
-//		Font font = new Font("Verdana", Font.BOLD, 12);
-//		gtd.setFont(font);
-//		gtd.drawString(name + " it's your turn", 510, 20);
-//	}
-
+	/**
+	 * displays moves for current player
+	 * @param gtd
+	 */
 	public void showMoves(Graphics2D gtd) {
 		gtd.setColor(Color.black);
 		Font font = new Font("Verdana", Font.BOLD, 12);
 		gtd.setFont(font);
 		gtd.drawString("Moves left: " + moves, 510, 40);
 	}
-
+	
+	/**
+	 * adds Jbuttons:
+	 * roll button
+	 * guess button
+	 * @param x
+	 * @param y
+	 * @param gtd
+	 */
 	public void addButtons(int x, int y, Graphics2D gtd) {
 		JButton roll = new JButton("ROLL");
 		roll.addActionListener(new ActionListener() {
@@ -142,6 +138,7 @@ class GameGUI extends JPanel implements ActionListener {
 			public void actionPerformed(ActionEvent e) {
 				if (game.currentPlayer.location instanceof Estate && !game.currentPlayer.hasGuessed()) {
 					guesserIndex = game.getPlayerList().indexOf(game.currentPlayer);
+					game.currentPlayer.setGuessed(true);
 					makeGuess(game.currentPlayer.location, gtd);
 				} else {
 					JOptionPane.showMessageDialog(null, "You not currently in an estate, or you have guessed already!");
@@ -154,14 +151,27 @@ class GameGUI extends JPanel implements ActionListener {
 		this.add(guess);
 		guess.grabFocus();
 	}
-
+	
+	/**
+	 * Gets the card options from game class
+	 * displays options in the form of JRadioButtons
+	 * gives player instructions on how to construct a guess
+	 * @param loc
+	 * @param gtd
+	 */
 	public void makeGuess(Location loc, Graphics2D gtd) {
 		List<String> cOptions = game.getCardOptions();
 		addOptionButtons(cOptions, gtd);
 		JOptionPane.showMessageDialog(null,
 				"Choose one Weapon and one Character, then click submit to submit your guess!");
 	}
-
+	
+	/**
+	 * displays cards to screen
+	 * Adds JButton 'submit', which will start the refutation cycle
+	 * @param cOptions
+	 * @param gtd
+	 */
 	private void addOptionButtons(List<String> cOptions, Graphics2D gtd) {
 
 		ButtonGroup ch = new ButtonGroup();
@@ -318,7 +328,13 @@ class GameGUI extends JPanel implements ActionListener {
 				}
 			}
 		});
-
+		
+		/*
+		 * Constructs guess from selected cards
+		 * checks if guess is the winning solution
+		 * if yes - display winning message and ask player if they want to play again
+		 * if no - start refutation cycle
+		 */
 		JButton submit = new JButton("SUBMIT GUESS");
 		submit.addMouseListener(new MouseListener() {
 			@Override
@@ -340,7 +356,7 @@ class GameGUI extends JPanel implements ActionListener {
 					      } else if (res == JOptionPane.NO_OPTION) {
 					    	  System.exit(0);
 					      } else if (res == JOptionPane.CLOSED_OPTION) {
-					    	  JOptionPane.showMessageDialog(null, "Exit or select new game from Menu");
+					         System.out.println("Exit the game, or select new game from Menu");
 					      }
 				} else {
 					game.nextPlayer(game.getPlayerList().indexOf(game.currentPlayer));
@@ -368,7 +384,12 @@ class GameGUI extends JPanel implements ActionListener {
 		this.add(submit);
 		submit.grabFocus();
 	}
-
+	
+	/**
+	 * 
+	 * @param radios
+	 * @param submit
+	 */
 	private void startRefutation(List<JRadioButton> radios, JButton submit) {
 		int curIndex = game.getPlayerList().indexOf(game.currentPlayer);
 		if (guesserIndex == curIndex) {
@@ -394,7 +415,13 @@ class GameGUI extends JPanel implements ActionListener {
 				addRefutationOptions(refutationCards, curIndex, radios);
 			}
 	}
-
+	
+	/**
+	 * 
+	 * @param options
+	 * @param currentIndex
+	 * @param radios
+	 */
 	private void addRefutationOptions(ArrayList<String> options, int currentIndex, List<JRadioButton> radios) {
     	int top = this.getSize().height/7;
     	for (int i = 0; i < options.size(); i++) {
@@ -424,7 +451,7 @@ class GameGUI extends JPanel implements ActionListener {
 					public void mouseExited(MouseEvent e) {}
     			});
     			
-    			submit.setBounds(this.getSize().width / 2 + 160 , top , + 150, 80);
+    			submit.setBounds(this.getSize().width / 2 + this.getSize().width / 4, top , + 210, 100);
     			submit.setVisible(true);
     			this.add(submit);
     			submit.grabFocus();
@@ -432,7 +459,12 @@ class GameGUI extends JPanel implements ActionListener {
     		}
     	}
 	}
-
+	
+	/**
+	 * hides radio buttons and submit button
+	 * @param buttons
+	 * @param submit
+	 */
 	public void removeOptions(List<JRadioButton> buttons, JButton submit) {
 		for (int i = 0; i < buttons.size(); i++) {
 			buttons.get(i).setVisible(false);
@@ -451,7 +483,12 @@ class GameGUI extends JPanel implements ActionListener {
 		game.nextPlayer(guesserIndex);
 		JOptionPane.showMessageDialog(null, game.currentPlayer.playerName + " it's your turn press roll!");
 	}
-
+	
+	/**
+	 * adds N, W, S, E buttons for moving currentPlayer
+	 * @param x
+	 * @param y
+	 */
 	public void addMoveButtons(int x, int y) {
 		JButton north = new JButton("N");
 		north.addActionListener(new ActionListener() {
@@ -573,22 +610,44 @@ class GameGUI extends JPanel implements ActionListener {
 
 	}
 
+	/**
+	 * Simple helper method, here so can be called inside an AnctionLister and MouseListener
+	 * @return
+	 */
 	public int moveWest() {
 		return game.moveWest(this);
 	}
-
+	
+	/**
+	 * Simple helper method, here so can be called inside an AnctionLister and MouseListener
+	 * @return
+	 */
 	public int moveEast() {
 		return game.moveEast(this);
 	}
-
+	
+	/**
+	 * Simple helper method, here so can be called inside an AnctionLister and MouseListener
+	 * @return
+	 */
 	public int moveNorth() {
 		return game.moveNorth(this);
 	}
-
+	
+	/**
+	 * Simple helper method, here so can be called inside an AnctionLister and MouseListener
+	 * @return
+	 */
 	public int moveSouth() {
 		return game.moveSouth(this);
 	}
-
+	
+	/**
+	 * Draws the board on the GUI
+	 * @param gtd
+	 * @param x
+	 * @param y
+	 */
 	public void drawBoard(Graphics2D gtd, int x, int y) {
 		Board board = game.getBoard();
 		Location[][] locations = board.getLocationSet();
@@ -644,39 +703,6 @@ class GameGUI extends JPanel implements ActionListener {
 			left = 10;
 		}
 	}
-	
-	public void menuBar(Graphics2D gtd) {
-        menuBar = new JMenuBar();
-        newGame = new JMenu("Options");
-        startNewGame = new JMenuItem("Start new game");
-        startNewGame.addActionListener(new ActionListener() {
-
-            @Override 
-            public void actionPerformed(ActionEvent e) {    if (e.getSource() == startNewGame) {
-                StartGUI newgame = new StartGUI();
-                String[] arguments = new String[] {"run"};
-                newgame.main(arguments);;
-            }}});
-        
-        showPlayerCards = new JMenuItem("Show Player Cards");
-        showPlayerCards.addActionListener(new ActionListener() {
-
-            @Override 
-            public void actionPerformed(ActionEvent e) {    if (e.getSource() == showPlayerCards) {
-            	game.currentPlayer.getCharName();
-          
-            	String cards = "";
-            	for (Card card : game.currentPlayer.getPlayerCards()) cards += card.getName() + ", ";
-            	JOptionPane.showMessageDialog(null, "Player " + game.currentPlayer.getPlayerName() + " is Holding the following cards : " + cards);
-            }}});
-
-        newGame.add(startNewGame);
-        newGame.add(showPlayerCards);
-        menuBar.add(newGame);
-        frame.add(menuBar);
-        frame.setJMenuBar(menuBar);
-    }
-	
 	
 	public void setGuesserIndex(int index) {
 		this.guesserIndex = index;

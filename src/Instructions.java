@@ -17,6 +17,13 @@ import java.util.Arrays;
 import javax.swing.*;
 
 @SuppressWarnings("serial")
+/**
+ * Prints instructions on GUI screen
+ * Adds back and next button
+ * Adds jradio buttons for selection of number of players playing
+ * @author Jack
+ *
+ */
 public class Instructions extends JPanel implements ActionListener {
 	private int numberOfPlayers = 0;
 	private JFrame frame;
@@ -42,6 +49,11 @@ public class Instructions extends JPanel implements ActionListener {
         
 	}
 	
+	/**
+	 * paints background and title for instructions class
+	 * @param gtd
+	 * @param screenSize
+	 */
 	private void paintBackgroundAndTitle(Graphics2D gtd, Dimension screenSize) {
 		GradientPaint col = new GradientPaint(0, 0, new Color(201, 13, 0), 0, screenSize.height,  new Color(0, 0, 0));
 		gtd.setPaint(col);
@@ -53,6 +65,10 @@ public class Instructions extends JPanel implements ActionListener {
         gtd.drawString("MURDER - MADNESS", this.getSize().width/2-220, this.getSize().height/7);
 	}
 	
+	/**
+	 * prints set of rules on the screen
+	 * @param gtd
+	 */
 	private void printRules(Graphics2D gtd) {
 		Font font = new Font("Verdana", Font.BOLD, 20);
         gtd.setFont(font);
@@ -83,6 +99,11 @@ public class Instructions extends JPanel implements ActionListener {
         }
 	}
 	
+	/**
+	 * adds JRadioButtons for nPlayer selection
+	 * adds 'Go back' / '<<' button for going back to main menu
+	 * adds 'Go' / 'I understand, Lets GO!' button for going to PlayerSelect screen
+	 */
 	private void addButtons() {
 		ButtonGroup bg = new ButtonGroup();
         
@@ -199,7 +220,10 @@ public class Instructions extends JPanel implements ActionListener {
 		back.grabFocus();
 	}
 	
-	protected void getPlayerSelect() {
+	/**
+	 * Replaces the JFrames current JPanel (instructions) with new JPanel (PlayerSelect)
+	 */
+	public PlayerSelect getPlayerSelect() {
 		PlayerSelect ps = new PlayerSelect(frame, numberOfPlayers);
 		ps.setLocation(0,0);
 		ps.setSize(this.frame.getSize());
@@ -208,8 +232,12 @@ public class Instructions extends JPanel implements ActionListener {
 		this.frame.remove(this);
 		this.frame.add(ps);
 		ps.repaint();
+		return ps;
 	}
-
+	
+	/**
+	 * Replaces the JFrames current JPanel (instructions) with new JPanel (Menu)
+	 */
 	public void getMenu() {
 		Menu menu = new Menu(frame);
 		menu.setLocation(0,0);

@@ -21,12 +21,18 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 @SuppressWarnings("serial")
+/**
+ * A JPanel to display player name selection
+ * Based on nPlayers selected in instructions JPanel, will display n players and JTextBox for player names
+ * @author Jack
+ *
+ */
 public class PlayerSelect extends JPanel implements MouseListener {
 	
 	private JFrame frame;
-	private int np;
+	public int np;
 	private String characters[] = { "Percy", "Malina", "Lucilla", "Bert" };
-	private List<String> pNames;
+	public List<String> pNames;
 	JTextField p1;
 	JTextField p2;
 	JTextField p3;
@@ -39,6 +45,9 @@ public class PlayerSelect extends JPanel implements MouseListener {
 		repaint();
 	}
 	
+	/**
+	 * Main draw/paint method
+	 */
 	public void paint(Graphics g) {
 		super.paint(g);
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -56,6 +65,14 @@ public class PlayerSelect extends JPanel implements MouseListener {
         
 	}
 	
+	/**
+	 * Adds back button / '<<'
+	 * Adds 'play' Button to start the game
+	 * Checks entered player names are not 'player' or 'name' or 'player name'
+	 * Checks enterer player names are not exactly the same
+	 * @param x
+	 * @param y
+	 */
 	public void addButtons(int x, int y) {
 		JButton back = new JButton("<<");
 		back.addActionListener(new ActionListener() {
@@ -123,6 +140,10 @@ public class PlayerSelect extends JPanel implements MouseListener {
 		play.grabFocus();
 	}
 	
+	/**
+	 * Set of methods to check each JTextBox for validity
+	 * @return
+	 */
 	public boolean checkP1() {
 		if (p1.getText().contains("player") || p1.getText().contains("name") || pNames.contains(p1.getText())) {
 			JOptionPane.showMessageDialog(frame,
@@ -133,6 +154,10 @@ public class PlayerSelect extends JPanel implements MouseListener {
 		}
 	}
 	
+	/**
+	 * Set of methods to check each JTextBox for validity
+	 * @return
+	 */
 	public boolean checkP2() {
 		if (p2.getText().contains("player") || p2.getText().contains("name") || pNames.contains(p2.getText())) {
 			JOptionPane.showMessageDialog(frame,
@@ -143,6 +168,10 @@ public class PlayerSelect extends JPanel implements MouseListener {
 		}
 	}
 	
+	/**
+	 * Set of methods to check each JTextBox for validity
+	 * @return
+	 */
 	public boolean checkP3() {
 		if (p3.getText().contains("player") || p3.getText().contains("name") || pNames.contains(p3.getText())) {
 			JOptionPane.showMessageDialog(frame,
@@ -153,6 +182,10 @@ public class PlayerSelect extends JPanel implements MouseListener {
 		}
 	}
 	
+	/**
+	 * Set of methods to check each JTextBox for validity
+	 * @return
+	 */
 	public boolean checkP4() {
 		if (p4.getText().contains("player") || p4.getText().contains("name") || pNames.contains(p4.getText())) {
 			JOptionPane.showMessageDialog(frame,
@@ -163,6 +196,12 @@ public class PlayerSelect extends JPanel implements MouseListener {
 		}
 	}
 	
+	/**
+	 * Depending on number of players player, will display respective JTextFields for input on each player name
+	 * @param x
+	 * @param y
+	 * @param gtd
+	 */
 	public void drawOptions(int x, int y, Graphics2D gtd) {
 		Font font = new Font("Verdana", Font.BOLD, 12);
         gtd.setFont(font);
@@ -179,6 +218,13 @@ public class PlayerSelect extends JPanel implements MouseListener {
         }
 	}
 	
+	/**
+	 * Set of methods to display each text field for each player
+	 * @param x
+	 * @param y
+	 * @param padding
+	 * @param gtd
+	 */
 	public void playerOneOpt(int x, int y, int padding, Graphics2D gtd) {
 		gtd.drawString("Player One: ", x, y-padding);
         
@@ -189,6 +235,13 @@ public class PlayerSelect extends JPanel implements MouseListener {
 		this.add(p1);
 	}
 	
+	/**
+	 * Set of methods to display each text field for each player
+	 * @param x
+	 * @param y
+	 * @param padding
+	 * @param gtd
+	 */
 	public void playerTwoOpt(int x, int y, int padding, Graphics2D gtd) {
 		gtd.drawString("Player Two: ", x, y-padding);
         
@@ -199,6 +252,13 @@ public class PlayerSelect extends JPanel implements MouseListener {
 		this.add(p2);
 	}
 	
+	/**
+	 * Set of methods to display each text field for each player
+	 * @param x
+	 * @param y
+	 * @param padding
+	 * @param gtd
+	 */
 	public void playerThreeOpt(int x, int y, int padding, Graphics2D gtd) {
 		gtd.drawString("Player Three: ", x, y-padding);
         
@@ -208,7 +268,14 @@ public class PlayerSelect extends JPanel implements MouseListener {
 		p3.setBounds(x, y, 100, 20);
 		this.add(p3);
 	}
-
+	
+	/**
+	 * Set of methods to display each text field for each player
+	 * @param x
+	 * @param y
+	 * @param padding
+	 * @param gtd
+	 */
 	public void playerFourOpt(int x, int y, int padding, Graphics2D gtd) {
 		gtd.drawString("Player Four: ", x, y-padding);
         
@@ -219,6 +286,11 @@ public class PlayerSelect extends JPanel implements MouseListener {
 		this.add(p4);
 	}
 	
+	/**
+	 * Paints background and title for class PlayerSelect
+	 * @param gtd
+	 * @param screenSize
+	 */
 	private void paintBackgroundAndTitle(Graphics2D gtd, Dimension screenSize) {
 		GradientPaint col = new GradientPaint(0, 0, new Color(201, 13, 0), 0, screenSize.height,  new Color(0, 0, 0));
 		gtd.setPaint(col);
@@ -233,7 +305,10 @@ public class PlayerSelect extends JPanel implements MouseListener {
         gtd.drawString("PLAYER SELECTION", this.getSize().width/2-120, this.getSize().height/5);
 	}
 	
-	public void getInstructions() {
+	/**
+	 * Method used to replace this JFrame Jpanel (PlayerSelect) with a new JPanel (Instructions)
+	 */
+	public Instructions getInstructions() {
 		Instructions ins = new Instructions(this.frame, new Menu(this.frame));
 		ins.setLocation(0,0);
 		ins.setSize(this.frame.getSize());
@@ -242,6 +317,7 @@ public class PlayerSelect extends JPanel implements MouseListener {
 		this.frame.remove(this);
 		this.frame.add(ins);
 		ins.repaint();
+		return ins;
 	}
 	
 //	public void drawCharacters(Graphics2D gtd) {
@@ -271,8 +347,10 @@ public class PlayerSelect extends JPanel implements MouseListener {
 //	}
 
 	
-
-	public void startGame(){
+	/**
+	 * Method used to replace this JFrame Jpanel (PlayerSelect) with a new JPanel (GameGUI)
+	 */
+	public GameGUI startGame(){
 		Game game = new Game(np, pNames);
 		GameGUI playScreen = new GameGUI(game, frame);
 		playScreen.setLocation(0,0);
@@ -282,37 +360,23 @@ public class PlayerSelect extends JPanel implements MouseListener {
 		this.frame.remove(this);
 		this.frame.add(playScreen);
 		playScreen.repaint();
+		return playScreen;
 	}
 	
 
 	@Override
-	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseClicked(MouseEvent e) {}
 
 	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mousePressed(MouseEvent e) {}
 
 	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseReleased(MouseEvent e) {}
 
 	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseEntered(MouseEvent e) {}
 
 	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseExited(MouseEvent e) {}
 	
 }

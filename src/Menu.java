@@ -1,5 +1,4 @@
 
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -14,6 +13,11 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
+/**
+ * Class to create a main menu
+ * @author New User
+ *
+ */
 public class Menu extends JPanel implements ActionListener {
 	public boolean clicked = false;
 	private JFrame frame;
@@ -23,6 +27,9 @@ public class Menu extends JPanel implements ActionListener {
 		repaint();
 	}
 	
+	/**
+	 * Main paint/draw method
+	 */
 	public void paint(Graphics g) {
 		super.paint(g);
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -55,7 +62,10 @@ public class Menu extends JPanel implements ActionListener {
 		start.grabFocus();
 	}
 	
-	public void getInstructions() {
+	/**
+	 * Method to replace this (Menu) with new Instructions JPanel
+	 */
+	public Instructions getInstructions() {
 		Instructions ins = new Instructions(this.frame, this);
 		ins.setLocation(0,0);
 		ins.setSize(this.frame.getSize());
@@ -64,6 +74,7 @@ public class Menu extends JPanel implements ActionListener {
 		this.frame.remove(this);
 		this.frame.add(ins);
 		ins.repaint();
+		return ins;
 	}
 
 	@Override
